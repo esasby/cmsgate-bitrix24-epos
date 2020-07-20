@@ -1,0 +1,17 @@
+/* Простой accordion на CSS3 */
+.tab > input{
+    display:none
+}
+
+.tab-header  {
+    display:inline-block
+}
+
+.tab-header-label {
+    font-weight: bolder;
+}
+
+.epos-button {
+    margin-left: 15px;
+    margin-bottom: 15px;
+}
