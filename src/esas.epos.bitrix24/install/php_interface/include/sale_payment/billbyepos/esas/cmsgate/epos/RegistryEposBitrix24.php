@@ -12,7 +12,6 @@ use esas\cmsgate\CmsConnectorBitrix24;
 use esas\cmsgate\descriptors\ModuleDescriptor;
 use esas\cmsgate\descriptors\VendorDescriptor;
 use esas\cmsgate\descriptors\VersionDescriptor;
-use esas\cmsgate\epos\view\client\CompletionPanelEpos;
 use esas\cmsgate\epos\view\client\CompletionPanelEposBitrix24;
 use esas\cmsgate\view\admin\AdminViewFields;
 use CMain;

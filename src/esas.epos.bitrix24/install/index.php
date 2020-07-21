@@ -1,17 +1,14 @@
 <?
 require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/esas.epos.bitrix24/install/php_interface/include/sale_payment/billbyepos/init.php");
 
-use Bitrix\Sale\PaySystem\Manager;
+use esas\cmsgate\bitrix\CmsgateCModuleBitrix24;
 use esas\cmsgate\bitrix\CmsgateEventHandler;
-use esas\cmsgate\ConfigFields;
-use esas\cmsgate\epos\InvoiceEpos;
 use esas\cmsgate\epos\EventHandlerEpos;
 use esas\cmsgate\Registry;
-use Sale\Handlers\PaySystem\EposHandlerBitrix24;
 
 if (class_exists('esas_epos_bitrix24')) return;
 
-class esas_epos_bitrix24 extends \esas\cmsgate\bitrix\CmsgateCModuleBitrix24
+class esas_epos_bitrix24 extends CmsgateCModuleBitrix24
 {
     const PRINT_FORM_MODULE_ID = 'billbyepos'; // обязательно должен начинаться с bill (см. bitrix/modules/crm/classes/general/crm_pay_system.php:1763)
 
@@ -35,6 +32,10 @@ class esas_epos_bitrix24 extends \esas\cmsgate\bitrix\CmsgateCModuleBitrix24
         $eventManager->unRegisterEventHandler('documentgenerator', 'onBeforeProcessDocument', Registry::getRegistry()->getModuleDescriptor()->getModuleMachineName(), EventHandlerEpos::class, 'onBeforeProcessDocument');
         $eventManager->unRegisterEventHandler('documentgenerator', 'onDriverCollectClasses', Registry::getRegistry()->getModuleDescriptor()->getModuleMachineName(), EventHandlerEpos::class, 'onDriverCollectClasses');
         $eventManager->unRegisterEventHandler('documentgenerator', 'onDataProviderManagerFillSubstitutionProviders', Registry::getRegistry()->getModuleDescriptor()->getModuleMachineName(), EventHandlerEpos::class, 'onDataProviderManagerFillSubstitutionProviders');
+    }
+
+    public function getModuleActionName() {
+        return "billbyepos";
     }
 
 //    protected function addFilesToInstallList()

@@ -53,4 +53,26 @@ class EventHandlerEpos extends CmsgateEventHandler
         ]);
     }
 
+    //возможно, уже не нужен
+    public static function onCrmInvoiceAdd(Event $event)
+    {
+        if (Loader::includeModule(Registry::getRegistry()->getModuleDescriptor()->getModuleMachineName())) {
+            try {
+                $orderWrapper = Registry::getRegistry()->getOrderWrapper($event->getParameter('ID'));
+                // проверяем, привязан ли к заказу extId, если да,
+                // то счет не выставляем, а просто прорисовываем старницу
+                if (empty($orderWrapper->getExtId())) {
+                    $controller = new ControllerEposAddInvoice();
+                    $controller->process($orderWrapper);
+                }
+                return true;
+            } catch (Throwable $e) {
+                Logger::getLogger("onCrmInvoiceAdd")->logger->error("Exception:", $e);
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
 }

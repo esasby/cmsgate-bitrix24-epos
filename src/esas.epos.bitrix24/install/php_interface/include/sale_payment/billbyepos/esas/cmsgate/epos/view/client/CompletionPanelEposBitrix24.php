@@ -78,5 +78,48 @@ class CompletionPanelEposBitrix24 extends CompletionPanelEpos
         );
     }
 
+    /**
+     * Переопределяем, чтобы в шаблоне не было секции с web[pay
+     * @return bool
+     */
+    public function isWebpaySectionEnabled()
+    {
+        return false;
+    }
 
+    private $isInstructionsSectionEnabledByAjax;
+
+    /**
+     * Временное хранение флага для реакции на изменение настройки в админки.
+     * Надо перерисовать шаблон, но сама настройка еще не сохранена и не доступна чере ConfigWrapper
+     * @param $isInstructionsSectionEnabledByAjax
+     */
+    public function setInstructionsSectionEnabled($isInstructionsSectionEnabledByAjax) {
+        $this->isInstructionsSectionEnabledByAjax = $isInstructionsSectionEnabledByAjax;
+    }
+
+    public function isInstructionsSectionEnabled()
+    {
+        if (isset($this->isInstructionsSectionEnabledByAjax))
+            return $this->isInstructionsSectionEnabledByAjax;
+        return parent::isInstructionsSectionEnabled();
+    }
+
+    private $qrCodeSectionEnabledByAjax;
+
+    /**
+     * Временное хранение флага для реакции на изменение настройки в админки.
+     * Надо перерисовать шаблон, но сама настройка еще не сохранена и не доступна чере ConfigWrapper
+     * @param $qrCodeSectionEnabledByAjax
+     */
+    public function setQRCodeSectionEnabled($qrCodeSectionEnabledByAjax) {
+        $this->qrCodeSectionEnabledByAjax = $qrCodeSectionEnabledByAjax;
+    }
+
+    public function isQRCodeSectionEnabled()
+    {
+        if (isset($this->qrCodeSectionEnabledByAjax))
+            return $this->qrCodeSectionEnabledByAjax;
+        return parent::isQRCodeSectionEnabled();
+    }
 }
