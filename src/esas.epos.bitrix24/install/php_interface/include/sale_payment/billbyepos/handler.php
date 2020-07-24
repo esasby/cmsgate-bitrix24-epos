@@ -9,12 +9,15 @@ use Bitrix\Main\Request;
 use Bitrix\Sale;
 use Bitrix\Sale\Payment;
 use Bitrix\Sale\PaySystem;
+use Bitrix\Sale\PaySystem\Service;
 use Bitrix\Sale\PaySystem\ServiceResult;
 use esas\cmsgate\epos\controllers\ControllerEposAddInvoice;
 use esas\cmsgate\epos\controllers\ControllerEposCompletionPage;
+use esas\cmsgate\epos\controllers\ControllerEposWebpayForm;
 use esas\cmsgate\epos\RegistryEposBitrix24;
 use esas\cmsgate\epos\utils\QRUtils;
 use esas\cmsgate\Registry;
+use esas\cmsgate\utils\Logger;
 use esas\cmsgate\wrappers\OrderWrapperImpl;
 use Throwable;
 
@@ -28,12 +31,18 @@ require_once("init.php");
  */
 class BillByEposHandler extends BillByHandler
 {
+    protected $logger;
+
+    public function __construct($type, Service $service)
+    {
+        parent::__construct($type, $service);
+        $this->logger = Logger::getLogger(get_class($this));
+    }
+
     public function initiatePay(Payment $payment, Request $request = null)
     {
         if (Loader::includeModule(Registry::getRegistry()->getModuleDescriptor()->getModuleMachineName())) {
             try {
-                $extraParams = $this->getPreparedParams($payment, $request);
-
                 $orderWrapper = Registry::getRegistry()->getOrderWrapper($payment->getOrderId());
                 // проверяем, привязан ли к заказу extId, если да,
                 // то счет не выставляем, а просто прорисовываем старницу
@@ -41,14 +50,23 @@ class BillByEposHandler extends BillByHandler
                     $controller = new ControllerEposAddInvoice();
                     $controller->process($orderWrapper);
                 }
-                $controller = new ControllerEposCompletionPage();
-                $completionPanel = $controller->process($orderWrapper->getOrderId());
-                $extraParams['completionPanel'] = $completionPanel;
+                if (array_key_exists("paySystemId", $_REQUEST)) {
+                    $controller = new ControllerEposWebpayForm();
+                    $eposWebPayRs = $controller->process($orderWrapper);
+                    $extraParams['webpayForm'] = $eposWebPayRs->getHtmlForm();
+                    $template = 'template_webpay';
+                } else {
+                    $controller = new ControllerEposCompletionPage();
+                    $completionPanel = $controller->process($orderWrapper->getOrderId());
+                    $extraParams = $this->getPreparedParams($payment, $request);
+                    $extraParams['completionPanel'] = $completionPanel;
+                    if (array_key_exists('pdf', $_REQUEST)) {
+                        ob_clean(); // иначе возникает ошибка Some data has already been output, can't send PDF file
+                        $template = 'template_pdf';
+                    } else
+                        $template = 'template';
+                }
                 $this->setExtraParams($extraParams);
-
-                $template = 'template';
-                if (array_key_exists('pdf', $_REQUEST))
-                    $template .= '_pdf';
                 return $this->showTemplate($payment, $template);
             } catch (Throwable $e) {
                 $this->logger->error("Exception:", $e);
@@ -84,7 +102,6 @@ class BillByEposHandler extends BillByHandler
         $data['completionPanel'] = $completionPanel;
         return $data;
     }
-
 
 
 }

@@ -38,76 +38,10 @@ class esas_epos_bitrix24 extends CmsgateCModuleBitrix24
         return "billbyepos";
     }
 
-//    protected function addFilesToInstallList()
-//    {
-//        parent::addFilesToInstallList();
-//        $this->installFilesList[] = self::MODULE_SUB_PATH . self::PRINT_FORM_MODULE_ID;
-//    }
-//
-//    protected function addPaysys()
-//    {
-//        return $this->addPaySystemWebpay();
-//    }
-//
-//    function InstallDB($arParams = array())
-//    {
-//        $retA = parent::InstallDB($arParams);
-//        $retB = $this->addPaySystem4PrintForm() ;
-//        return $retA && $retB;
-//    }
-//
-//
-//    /**
-//     * @return \Bitrix\Main\Entity\AddResult
-//     */
-//    protected function addPaySystemWebpay()
-//    {
-//        return Manager::Add(
-//            array(
-//                "NAME" => Registry::getRegistry()->getTranslator()->getConfigFieldDefault(ConfigFields::paymentMethodName()),
-//                "DESCRIPTION" => "Оплата картой",  //todo
-//                "ACTION_FILE" => Registry::getRegistry()->getModuleDescriptor()->getModuleMachineName(),
-//                "LOGOTIP" => CFile::MakeFileArray('/bitrix/images/sale/sale_payments/' . Registry::getRegistry()->getModuleDescriptor()->getModuleMachineName() . '.png'),
-//                "ACTIVE" => "N",
-//                "ENTITY_REGISTRY_TYPE" => $this->getPaysystemType(), // без этого созданная платежная система не отображается в списке
-//                "NEW_WINDOW" => "N",
-//                "HAVE_PREPAY" => "N",
-//                "HAVE_RESULT" => "N",
-//                "HAVE_ACTION" => "N",
-//                "HAVE_PAYMENT" => "Y",
-//                "HAVE_RESULT_RECEIVE" => "Y",
-//                "ENCODING" => "utf-8",
-//                "SORT" => 100,
-//            )
-//        );
-//    }
-//
-//    /**
-//     * Необходимо создавать отдельную платежную систему для платежной формы (форма которая будет доступна клиенту по публичной ссылке).
-//     * ACTION_FILE должен начинаться со слова bill
-//     * @return \Bitrix\Main\Entity\AddResult
-//     */
-//    protected function addPaySystem4PrintForm()
-//    {
-//        return Manager::Add(
-//            array(
-//                "NAME" => Registry::getRegistry()->getTranslator()->getConfigFieldDefault(ConfigFields::paymentMethodName()),
-//                "DESCRIPTION" => "Оплата картой",  //todo
-//                "ACTION_FILE" => self::PRINT_FORM_MODULE_ID,
-//                "LOGOTIP" => CFile::MakeFileArray('/bitrix/images/sale/sale_payments/' . Registry::getRegistry()->getModuleDescriptor()->getModuleMachineName() . '.png'),
-//                "ACTIVE" => "N",
-//                "ENTITY_REGISTRY_TYPE" => $this->getPaysystemType(), // без этого созданная платежная система не отображается в списке
-//                "NEW_WINDOW" => "N",
-//                "HAVE_PREPAY" => "N",
-//                "HAVE_RESULT" => "N",
-//                "HAVE_ACTION" => "N",
-//                "HAVE_PAYMENT" => "Y",
-//                "HAVE_RESULT_RECEIVE" => "Y",
-//                "ENCODING" => "utf-8",
-//                "SORT" => 100,
-//            )
-//        );
-//    }
-
-
+    protected function addFilesToInstallList()
+    {
+        parent::addFilesToInstallList();
+        $this->installFilesList[] = "/components/bitrix/crm.invoice.payment.client/templates/.default/result_modifier.php";
+        $this->installFilesList[] = "/images/sale/sale_payments/epos_webpay.png";
+    }
 }

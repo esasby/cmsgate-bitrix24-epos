@@ -11,5 +11,6 @@ require_once("init.php");
 //наследуем параметры обработчика billby
 
 require  \Bitrix\Main\Application::getDocumentRoot() . '/bitrix/modules/sale/handlers/paysystem/billby/.description.php';
+$data['NAME'] = RegistryEposBitrix24::getRegistry()->getModuleDescriptor()->getModuleFullName();
 $data['CODES'] = array_merge($data['CODES'], RegistryEposBitrix24::getRegistry()->createConfigForm()->generateCodes());
 ?>

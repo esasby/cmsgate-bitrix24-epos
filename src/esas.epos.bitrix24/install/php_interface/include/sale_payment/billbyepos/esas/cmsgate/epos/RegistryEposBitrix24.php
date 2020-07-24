@@ -8,6 +8,7 @@
 
 namespace esas\cmsgate\epos;
 
+use CCrmInvoice;
 use esas\cmsgate\CmsConnectorBitrix24;
 use esas\cmsgate\descriptors\ModuleDescriptor;
 use esas\cmsgate\descriptors\VendorDescriptor;
@@ -57,10 +58,7 @@ class RegistryEposBitrix24 extends RegistryEpos
 
     function getUrlWebpay($orderId)
     {
-        global $APPLICATION;
-        return (CMain::IsHTTPS() ? "https" : "http")
-            . "://"
-            . ((defined("SITE_SERVER_NAME") && strlen(SITE_SERVER_NAME) > 0) ? SITE_SERVER_NAME : COption::GetOptionString("main", "server_name", "")) . $APPLICATION->GetCurUri();
+        return CCrmInvoice::getPublicLink($orderId);
     }
 
     public function getCompletionPanel($orderWrapper)
