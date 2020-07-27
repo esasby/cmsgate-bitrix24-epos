@@ -42,6 +42,8 @@ class esas_epos_bitrix24 extends CmsgateCModuleBitrix24
     {
         parent::addFilesToInstallList();
         $this->installFilesList[] = "/components/bitrix/crm.invoice.payment.client/templates/.default/result_modifier.php";
+        $this->installFilesList[] = "/php_interface/include/sale_payment/esas_epos_bitrix24";
+        $this->installFilesList[] = "/tools/sale_ps_epos_result.php";
         $this->installFilesList[] = "/images/sale/sale_payments/epos_webpay.png";
     }
 }

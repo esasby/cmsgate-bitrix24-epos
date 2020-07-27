@@ -11,6 +11,7 @@ use Bitrix\Sale\Payment;
 use Bitrix\Sale\PaySystem;
 use Bitrix\Sale\PaySystem\Service;
 use Bitrix\Sale\PaySystem\ServiceResult;
+use esas\cmsgate\epos\bitrix\EposBitrix24ServiceHandler;
 use esas\cmsgate\epos\controllers\ControllerEposAddInvoice;
 use esas\cmsgate\epos\controllers\ControllerEposCompletionPage;
 use esas\cmsgate\epos\controllers\ControllerEposWebpayForm;
@@ -50,12 +51,12 @@ class BillByEposHandler extends BillByHandler
                     $controller = new ControllerEposAddInvoice();
                     $controller->process($orderWrapper);
                 }
-                if (array_key_exists("paySystemId", $_REQUEST)) {
+                if (array_key_exists("paySystemId", $_REQUEST)) { //случай когда нажата кнопка оплаты в публичном счете
                     $controller = new ControllerEposWebpayForm();
                     $eposWebPayRs = $controller->process($orderWrapper);
                     $extraParams['webpayForm'] = $eposWebPayRs->getHtmlForm();
                     $template = 'template_webpay';
-                } else {
+                } else { //сама страница публичного счета
                     $controller = new ControllerEposCompletionPage();
                     $completionPanel = $controller->process($orderWrapper->getOrderId());
                     $extraParams = $this->getPreparedParams($payment, $request);
@@ -102,6 +103,4 @@ class BillByEposHandler extends BillByHandler
         $data['completionPanel'] = $completionPanel;
         return $data;
     }
-
-
 }
