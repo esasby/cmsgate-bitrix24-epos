@@ -10,6 +10,10 @@ use esas\cmsgate\CmsConnectorBitrix24;
 use esas\cmsgate\epos\RegistryEposBitrix24;
 use esas\cmsgate\epos\view\client\ClientViewFieldsEpos;
 
+/**
+ * result_modifier используется для того, чтобы на странице публичной ссылки подменить логоти
+ * и подпись для оплаты (вместо лого и текста epos используются лого и текст webpay )
+ */
 $eposPaySystemId = CmsConnectorBitrix24::getInstance()->getPaysystemId();
 if ($eposPaySystemId > 0) {
     foreach ($arResult['PAYSYSTEMS_LIST'] as $key => &$paySystem) {

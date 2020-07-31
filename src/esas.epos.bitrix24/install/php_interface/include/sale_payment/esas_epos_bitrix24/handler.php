@@ -13,6 +13,9 @@ use esas\cmsgate\epos\controllers\ControllerEposCallbackBitrix;
 use Exception;
 
 /**
+ * Отдельный handler для корректной работы callback-в.
+ * Проблема связана с тем, что billbyepos/handler наследуется от BillByHandler, а при колбэке в \Bitrix\Sale\PaySystem\Service::processRequest
+ * проверяется, чтобы handler был наследником ServiceHandler.
  * Имя класса обязательно должно совпадать с именем родительского каталога и значением в ACTION_FILE в БД (\esas\cmsgate\bitrix\CmsgateCModule::addPaysys)
  * @package Sale\Handlers\PaySystem
  */

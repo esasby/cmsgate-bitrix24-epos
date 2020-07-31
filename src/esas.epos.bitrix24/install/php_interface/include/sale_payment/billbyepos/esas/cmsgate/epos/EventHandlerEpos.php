@@ -10,6 +10,7 @@ namespace esas\cmsgate\epos;
 
 
 use Bitrix\Crm\Integration\DocumentGenerator\DataProvider\Invoice;
+use Bitrix\Main\Loader;
 use esas\cmsgate\bitrix\CmsgateEventHandler;
 use esas\cmsgate\Registry;
 

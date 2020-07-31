@@ -21,7 +21,7 @@ if (CModule::IncludeModule("sale"))
 	$item = PaySystem\Manager::getById(CmsConnectorBitrix24::getInstance()->getPaysystemId());
 	if ($item !== false)
 	{
-	    $item["ACTION_FILE"] = "esas_epos_bitrix24";
+	    $item["ACTION_FILE"] = "esas_epos_bitrix24"; //подменяем handler
 		$service = new PaySystem\Service($item);
 		if ($service instanceof PaySystem\Service)
 		{

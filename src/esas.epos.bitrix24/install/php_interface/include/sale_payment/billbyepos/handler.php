@@ -11,7 +11,6 @@ use Bitrix\Sale\Payment;
 use Bitrix\Sale\PaySystem;
 use Bitrix\Sale\PaySystem\Service;
 use Bitrix\Sale\PaySystem\ServiceResult;
-use esas\cmsgate\epos\bitrix\EposBitrix24ServiceHandler;
 use esas\cmsgate\epos\controllers\ControllerEposAddInvoice;
 use esas\cmsgate\epos\controllers\ControllerEposCompletionPage;
 use esas\cmsgate\epos\controllers\ControllerEposWebpayForm;
